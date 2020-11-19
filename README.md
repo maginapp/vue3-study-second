@@ -1,1 +1,3 @@
-# vue3-study-second
+## 问题
+
+* 指令未执行  `view/Directive`

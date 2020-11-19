@@ -1,0 +1,1 @@
+export const sayHiJs = (msg) => msg 
