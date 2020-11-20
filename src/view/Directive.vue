@@ -2,6 +2,14 @@
   <div>
     <h2>{{$fnA('全局')}} {{$varA}}</h2>
     <p>{{msg}}</p>
+    <div>
+      <h3>v-focus3</h3>
+      <input :class="{[focusValue.a]: true}" v-if="showFocus" type="text" v-focus3:foo.test="focusValue">
+      <div>
+        <button @click="focusValue.a = focusValue.a + 1">change value</button>
+        <button @click="showFocus = !showFocus">toggle</button>
+      </div>
+    </div>
     <input type="text" v-focus>
     <!-- <input-focus/>
     <input-n/> -->
@@ -38,7 +46,9 @@ export default {
     return {
       name: '梨花',
       say: 'vue-directive-say',
-      hello: 'vue-directive-hello'
+      hello: 'vue-directive-hello',
+      focusValue: { a: 1,b: 2 },
+      showFocus: true
     }
   },
   setup() {
@@ -52,15 +62,41 @@ export default {
     console.log(this.$options.say)
   },
   directives: {
+    focus3: {
+      // Directive has a set of lifecycle hooks:
+      // called before bound element's parent component is mounted
+      beforeMount() {
+        console.log(arguments)
+        const el = arguments[0]
+        el.focus()
+      },
+      // called when bound element's parent component is mounted
+      mounted(el, binding) {
+        el.focus()
+        console.log(binding)
+      },
+      // called before the containing component's VNode is updated
+      beforeUpdate() {},
+      // called after the containing component's VNode and the VNodes of its children // have updated
+      updated(el, binding) {
+        console.log('updated', binding)
+      },
+      // called before the bound element's parent component is unmounted
+      beforeUnmount() {},
+      // called when the bound element's parent component is unmounted
+      unmounted() {}
+    },
     focus: {
       inserted: function(el) {
         el.focus()
+        console.log('focus-inserted')
       }
     },
     focusd: {
       // 指令的定义
       inserted: function (el) {
         el.focus()
+        console.log('focusd-inserted')
       }
     },
     focusm: {
